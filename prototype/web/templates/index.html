@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaijaCare Prototype Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 20px 0;
+            font-size: 13px;
+            color: #333;
+        }
+        .demo-section {
+            margin: 30px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+        }
+        .flags {
+            color: #d73;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NaijaCare Prototype Demo</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Not for Clinical Use</strong><br>
+            This is a non-clinical exploratory prototype for portfolio demonstration.
+            No real patients, no clinical advice, no deployment.
+        </div>
+
+        <div class="demo-section">
+            <h2>Test Routing</h2>
+            <div class="form-group">
+                <label>Clinic ID:</label>
+                <input type="text" id="sender" placeholder="e.g., clinic_sokoto" value="clinic_sokoto">
+            </div>
+            <div class="form-group">
+                <label>Message Text:</label>
+                <select id="sample" onchange="populateText()">
+                    <option value="">-- Choose Sample --</option>
+                    {% for sample in samples %}
+                    <option value="{{ sample.text }}">{{ sample.text[:50] }}...</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Or Enter Custom Text:</label>
+                <input type="text" id="text" placeholder="Patient message...">
+            </div>
+            <button onclick="routeMessage()">Route Message</button>
+            <div id="result"></div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Session Statistics</h2>
+            <div id="stats" class="stats"></div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Audit Log (Privacy-Preserving)</h2>
+            <p style="font-size: 13px; color: #666;">Clinic IDs hashed, messages truncated, no raw data stored.</p>
+            <button onclick="showAudit()">Refresh Audit Log</button>
+            <div id="audit" style="margin-top: 15px; max-height: 300px; overflow-y: auto; font-size: 12px;"></div>
+        </div>
+    </div>
+
+    <script>
+        function populateText() {
+            document.getElementById("text").value = document.getElementById("sample").value;
+        }
+
+        function routeMessage() {
+            const sender = document.getElementById("sender").value || "unknown";
+            const text = document.getElementById("text").value || document.getElementById("sample").value;
+
+            if (!text) {
+                alert("Please select or enter a message");
+                return;
+            }
+
+            fetch("/api/route", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sender, text })
+            })
+            .then(r => r.json())
+            .then(data => {
+                let html = `<div class="result"><strong>Decision:</strong> ${data.decision}<br>`;
+                if (data.reason) html += `<strong>Reason:</strong> ${data.reason}<br>`;
+                if (data.flags.length > 0) {
+                    html += `<div class="flags">Flags: ${data.flags.join(", ")}</div>`;
+                }
+                html += `</div>`;
+                document.getElementById("result").innerHTML = html;
+                refreshStats();
+            });
+        }
+
+        function refreshStats() {
+            fetch("/api/stats")
+            .then(r => r.json())
+            .then(data => {
+                let html = `
+                    <div class="stat-card">
+                        <div class="stat-number">${data.total_messages}</div>
+                        <div class="stat-label">Total Messages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${data.emergency_count}</div>
+                        <div class="stat-label">Escalations</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${Object.keys(data.decisions).length}</div>
+                        <div class="stat-label">Decision Types</div>
+                    </div>
+                `;
+                document.getElementById("stats").innerHTML = html;
+            });
+        }
+
+        function showAudit() {
+            fetch("/api/audit")
+            .then(r => r.json())
+            .then(data => {
+                let html = "<table style='width:100%; font-size:11px;'>";
+                html += "<tr><th>Clinic Hash</th><th>Decision</th><th>Msg Len</th><th>Emergency</th></tr>";
+                for (let e of data.slice(-10)) {
+                    html += `<tr>
+                        <td>${e.clinic_id_hash}</td>
+                        <td>${e.decision}</td>
+                        <td>${e.message_length}</td>
+                        <td>${e.has_emergency_flag ? "✓" : "—"}</td>
+                    </tr>`;
+                }
+                html += "</table>";
+                document.getElementById("audit").innerHTML = html;
+            });
+        }
+
+        refreshStats();
+    </script>
+</body>
+</html>

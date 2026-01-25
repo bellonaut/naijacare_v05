@@ -12,14 +12,14 @@ from pathlib import Path
 import argparse
 
 # Add src/ to path for importing naijacare
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.naijacare.models import Message
 from src.naijacare.routing import route_message
 from src.naijacare.audit import AuditLog
 from src.naijacare.privacy import hash_clinic_id
 
-FIXTURES = Path(__file__).parent.parent / "fixtures" / "sample_messages.jsonl"
+FIXTURES = Path(__file__).parent / "fixtures" / "sample_messages.jsonl"
 
 
 def load_fixtures(path):

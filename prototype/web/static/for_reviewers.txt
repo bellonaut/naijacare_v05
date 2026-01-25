@@ -1,0 +1,9 @@
+This is a non-clinical prototype demonstration for portfolio purposes only.
+
+For reviewers: The code is intentionally minimal and simulated. It demonstrates:
+- A routing workflow concept for low-bandwidth settings
+- Privacy-preserving audit logging (hashed IDs, truncated messages)
+- Consent gates and consent tracking
+- Why governance, not code, was the actual blocker
+
+See docs/ for the pause decision rationale.
