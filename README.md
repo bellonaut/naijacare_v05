@@ -2,6 +2,8 @@
 
 **Status:** paused at prototype stage • **Data:** synthetic only • **Use:** demo / portfolio • **Clinical use:** **NO**
 
+**Maintainer:** Bashir Aminu Bello (NaijaCare)
+
 This repository is intentionally modest in code and heavy in documentation: it demonstrates a low-bandwidth consult-routing workflow, *and* the governance constraints that stopped it from becoming anything more.
 
 ## What exists (truthfully)
@@ -13,6 +15,12 @@ This repository is intentionally modest in code and heavy in documentation: it d
   - **CLI:** `python prototype/cli.py --fixtures prototype/fixtures/sample_messages.jsonl`
   - **Web UI (Flask):** `python prototype/web/app.py` then open `http://localhost:5000`
 - Documentation explaining why the project was paused.
+
+## What the prototype demonstrates
+- Intake → routing → escalation decisions against synthetic messages
+- A privacy-preserving audit trail (no raw text, hashed clinic IDs)
+- A minimal UI that mirrors how a clinic operator might test routing logic
+- A documented boundary between feasibility and legitimacy
 
 ## What does *not* exist
 - No WhatsApp Business integration
@@ -53,11 +61,12 @@ pytest
 
 ## Provenance (truth-safe)
 - **Late Aug 2025:** project paused after an implementation conversation highlighted liability/infrastructure/privacy/scope concerns.
-- **2026-01-25:** repository assembled as a portfolio artifact: runnable prototype + documentation.
+- **2026-01-25:** repository assembled as a public reference prototype: runnable demo + governance documentation.
 
 See:
 - `docs/01_problem_context.md` — Why this problem matters
 - `docs/02_architecture.md` — What was built
+- `docs/03_workflow_walkthrough.md` — Walkthrough of prototype flows
 - `docs/04_risk_legitimacy_memo.md` — What was missing (governance, partnerships, regulatory)
 - `docs/05_pause_decision_log.md` — Why it paused (law > code)
-- `docs/07_application_alignment.md` — What this teaches about tech policy
+- `docs/07_reflection_and_alignment.md` — Governance reflection and policy alignment

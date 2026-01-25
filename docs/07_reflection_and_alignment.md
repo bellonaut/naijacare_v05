@@ -1,4 +1,4 @@
-# Application Alignment (Law School)
+# Governance Reflection & Alignment
 
 ## What This Shows
 
@@ -21,16 +21,10 @@
 
 > I documented and prototyped a WhatsApp-first consult routing workflow for low-bandwidth settings (NaijaCare) and paused it in Aug 2025 after implementation guidance highlighted unresolved liability and governance gaps. The technical prototype works; the legal and institutional prerequisites do not. This taught me that technology alone cannot solve problems in regulated domains.
 
-## Why This Matters for Law School
+## Why This Matters in Regulated Domains
 
-**For admissions:**
 - Shows ethical judgment and risk awareness
 - Demonstrates cross-domain thinking (tech + law + health)
-- Honest about constraints, not defensive
-
-**For scholarship essays:**
-- Illustrates why health law / tech policy matters
-- Shows motivation for formal legal training
 - Explains the boundary between engineering and regulation
 
 ## The Repository
@@ -43,4 +37,3 @@ This is intentionally published as "documentation + prototype," not "product ann
 ---
 
 **TL;DR for reviewers:** This is what intellectual honesty looks like in a tech project. It's about knowing when to stop.
-
