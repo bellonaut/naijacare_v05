@@ -52,8 +52,8 @@ pytest
 ```
 
 ## Provenance (truth-safe)
-- **Late Aug 2025:** project paused after an implementation conversation highlighted liability/infrastructure/privacy/scope concerns.
-- **2026-01-25:** repository assembled as a portfolio artifact: runnable prototype + documentation.
+- **Early 2025 (Feb):** project paused after an implementation conversation highlighted liability/infrastructure/privacy/scope concerns.
+- **2025-03-15:** repository assembled as a portfolio artifact: runnable prototype + documentation.
 
 See:
 - `docs/01_problem_context.md` — Why this problem matters

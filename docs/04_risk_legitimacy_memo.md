@@ -2,7 +2,7 @@
 
 **Disclaimer:** This memo is from early-stage exploration and is *not* legal advice.
 
-## Risks Identified (Late Aug 2025)
+## Risks Identified (Early 2025)
 
 ### 1. Unbounded Professional Liability
 - Routing algorithm is heuristic (keyword-based), not clinically validated
@@ -37,4 +37,3 @@
 Given the gaps above, continuing without these in place would be **irresponsible**.
 
 The prototype code is sound, but the governance scaffold is not. Law ≠ code; it requires domain experts and partnerships.
-
