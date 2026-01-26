@@ -1,6 +1,6 @@
 # Pause Decision Log
 
-## Event: Project Paused (Late August 2025)
+## Event: Project Paused (Early 2025)
 
 ### Context
 After ~18 months of concept + workflow design, had a conversation with an NGO implementation partner in Hausa.
@@ -34,4 +34,3 @@ This is not a technical pause. The code works. The routing logic is sound for a 
 
 ## Lesson for This Portfolio
 This project demonstrates mature engineering judgment: recognizing when code is not the bottleneck.
-
