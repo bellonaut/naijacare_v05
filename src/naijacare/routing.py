@@ -1,9 +1,11 @@
 """Routing logic with red-flag detection (non-clinical prototype)."""
 
+from .consent import ConsentRecord, ConsentValidationError, validate_consent
 from .models import Message, RoutingDecision
 
 
 RED_FLAGS = ["bleeding", "unconscious", "seizure", "unresponsive", "severe"]
+ROUTING_CONSENT_SCOPES = {"data_collection", "ai_processing"}
 
 
 def route_message(msg: Message) -> RoutingDecision:
@@ -40,3 +42,16 @@ def route_message(msg: Message) -> RoutingDecision:
             reason="No clinical keywords",
             flags=[]
         )
+
+
+def route_message_with_consent(msg: Message, consent: ConsentRecord) -> RoutingDecision:
+    """Route a message after consent validation."""
+    try:
+        validate_consent(consent, ROUTING_CONSENT_SCOPES)
+    except ConsentValidationError as exc:
+        return RoutingDecision(
+            decision="NON_CLINICAL",
+            reason=f"Consent invalid: {exc}",
+            flags=[],
+        )
+    return route_message(msg)
